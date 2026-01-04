@@ -1,5 +1,7 @@
 package crm.model;
 
+import crm.utils.DateUtils;
+
 public class Lead {
     private int id;
     private int contactId;
@@ -7,7 +9,13 @@ public class Lead {
     private String source;
     private String createdAt;
 
+    private static final DateUtils dateUtils = new DateUtils();
+
     public Lead(int id, int contactId, Status status, String source, String createdAt) {
+        if (!dateUtils.isValidDateTime(createdAt)) {
+            throw new IllegalArgumentException("Invalid date time format: " + createdAt + ". Expected format: YYYY-MM-DD HH:mm");
+        }
+        
         this.id = id;
         this.contactId = contactId;
         this.status = status;
@@ -25,7 +33,12 @@ public class Lead {
     public void setContactId(int contactId) { this.contactId = contactId; }
     public void setStatus(Status status) { this.status = status; }
     public void setSource(String source) { this.source = source; }
-    public void setCreatedAt(String createdAt) { this.createdAt = createdAt;}
+    public void setCreatedAt(String createdAt) { 
+        if (!dateUtils.isValidDateTime(createdAt)) {
+            throw new IllegalArgumentException("Invalid date time format: " + createdAt + ". Expected format: YYYY-MM-DD HH:mm");
+        }
+        this.createdAt = createdAt;
+    }
 
     @Override
     public String toString() {
